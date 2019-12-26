@@ -1,21 +1,72 @@
-.DS_Store
-node_modules
-/dist
 
-# local env files
-.env.local
-.env.*.local
+# 查看更多 .gitignore 配置 -> https://help.github.com/articles/ignoring-files/
 
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+target/
+!.mvn/wrapper/maven-wrapper.jar
 
-# Editor directories and files
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
 .idea
+*.iws
+*.iml
+*.ipr
+*.class
+target/*
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+/build/
+
+
+
+### web ###
+# dependencies
+**/node_modules
+
+# roadhog-api-doc ignore
+/src/utils/request-temp.js
+_roadhog-api-doc
+
+# production
+/dist
+/.vscode
+
+# misc
+.DS_Store
+npm-debug.log*
+yarn-error.log
+
+/coverage
+.idea
+yarn.lock
+package-lock.json
+*bak
 .vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+# visual studio code
+.history
+*.log
+
+functions/mock
+.temp/**
+
+# umi
+.umi
+.umi-production
+
+# screenshot
+screenshot
+.firebase
+sessionStore

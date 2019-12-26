@@ -1,26 +1,81 @@
-import Vue from "vue";
-import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import store from './store'
+import { formatRoutes } from '@/util/util'
+// const _import = require('@/router/_import')
 
-Vue.use(Router);
+Vue.use(VueRouter)
+// 布局
+import Layout from '@/page/index/index'
 
-export default new Router({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes: [
+const constantRouterMap = [{
+  path: '/',
+  redirect: '/wel'
+}, {
+  path: '/wel',
+  name: '主页',
+  component: Layout,
+  redirect: '/wel/index',
+  children: [{
+    path: 'index',
+    name: '主页',
+    component: () => import('@/page/wel.vue'),
+    meta: { title: '主页', icon: 'el-icon-s-data', breadcrumb: true }
+  }]
+}, {
+  path: '*',
+  redirect: '/404',
+  hidden: true
+}, {
+  path: '/login',
+  name: '登录页',
+  component: () => import('@/page/login/index.vue')
+}, {
+  path: '/info',
+  component: Layout,
+  redirect: '/info/index',
+  children: [
     {
-      path: "/",
-      name: "home",
-      component: Home
+      path: 'index',
+      name: '个人信息',
+      component: () => import('@/views/admin/user/info')
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+      path: 'passwd',
+      name: '修改密码',
+      component: () => import('@/views/admin/user/passwd')
     }
   ]
-});
+}, {
+  path: '/404',
+  component: () => import('@/components/error-page/404'),
+  name: '404'
+}, {
+  path: '/403',
+  component: () => import('@/components/error-page/403'),
+  name: '403'
+}, {
+  path: '/500',
+  component: () => import('@/components/error-page/500'),
+  name: '500'
+}]
+
+export default new VueRouter({
+  // mode: 'history',
+  strict: process.env.NODE_ENV !== 'production',
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (from.meta.keepAlive) {
+        from.meta.savedPosition = document.body.scrollTop
+      }
+      return {
+        x: 0,
+        y: to.meta.savedPosition || 0
+      }
+    }
+  },
+  routes: [].concat(...formatRoutes(store.state.user.menu), constantRouterMap)
+})
+
