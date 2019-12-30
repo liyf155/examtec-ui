@@ -119,7 +119,7 @@ export default {
     width: 270px;
   }
   .el-form-item {
-    margin-bottom: 12px;
+    /* margin-bottom: 12px; */
   }
   .el-input {
     input {
@@ -143,9 +143,9 @@ export default {
 }
 .login-code-img {
   width: 100px;
-  height: 38px;
+  height: 32px;
   background-color: #fdfdfd;
-  border: 1px solid #f0f0f0;
+  border: 1px solid #dcdcdc;
   color: #333;
   font-size: 14px;
   font-weight: bold;
@@ -153,5 +153,7 @@ export default {
   line-height: 32px;
   text-indent: 5px;
   text-align: center;
+  box-sizing: border-box;
+  border-radius: 3px;
 }
 </style>
