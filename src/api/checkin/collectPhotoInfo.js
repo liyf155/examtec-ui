@@ -4,9 +4,9 @@ import fetch from '@/router/axios'
  * 分页获取数据
  * @param query
  */
-export function getCollectPhotoInfosByPage(query) {
+export function getCollectPhotoInfosByPage (query) {
   return fetch({
-    url: '/checkin/collectPhotoInfo/page',
+    url: '/checkin/collect-photo-infos/page',
     method: 'get',
     params: query
   })
@@ -16,9 +16,9 @@ export function getCollectPhotoInfosByPage(query) {
  * 添加对象
  * @param obj
  */
-export function addCollectPhotoInfo(obj) {
+export function addCollectPhotoInfo (obj) {
   return fetch({
-    url: '/checkin/collectPhotoInfo',
+    url: '/checkin/collect-photo-infos',
     method: 'post',
     data: obj
   })
@@ -28,9 +28,9 @@ export function addCollectPhotoInfo(obj) {
  * 通过ID获取对象
  * @param id
  */
-export function getCollectPhotoInfo(id) {
+export function getCollectPhotoInfo (id) {
   return fetch({
-    url: '/checkin/collectPhotoInfo/' + id,
+    url: '/checkin/collect-photo-infos/' + id,
     method: 'get'
   })
 }
@@ -39,9 +39,9 @@ export function getCollectPhotoInfo(id) {
  * 通过ID删除对象
  * @param row
  */
-export function delCollectPhotoInfo(id) {
+export function delCollectPhotoInfo (id) {
   return fetch({
-    url: '/checkin/collectPhotoInfo/' + id,
+    url: '/checkin/collect-photo-infos/' + id,
     method: 'delete'
   })
 }
@@ -50,9 +50,9 @@ export function delCollectPhotoInfo(id) {
  * 更新对象
  * @param obj
  */
-export function updCollectPhotoInfo(obj) {
+export function updCollectPhotoInfo (obj) {
   return fetch({
-    url: '/checkin/collectPhotoInfo',
+    url: '/checkin/collect-photo-infos',
     method: 'put',
     data: obj
   })

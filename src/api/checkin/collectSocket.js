@@ -4,9 +4,9 @@ import fetch from '@/router/axios'
  * 分页获取数据
  * @param query
  */
-export function getCollectSocketsByPage(query) {
+export function getCollectSocketsByPage (query) {
   return fetch({
-    url: '/checkin/collectSocket/page',
+    url: '/checkin/collect-sockets/page',
     method: 'get',
     params: query
   })
@@ -16,9 +16,9 @@ export function getCollectSocketsByPage(query) {
  * 添加对象
  * @param obj
  */
-export function addCollectSocket(obj) {
+export function addCollectSocket (obj) {
   return fetch({
-    url: '/checkin/collectSocket',
+    url: '/checkin/collect-sockets',
     method: 'post',
     data: obj
   })
@@ -28,9 +28,9 @@ export function addCollectSocket(obj) {
  * 通过ID获取对象
  * @param id
  */
-export function getCollectSocket(id) {
+export function getCollectSocket (id) {
   return fetch({
-    url: '/checkin/collectSocket/' + id,
+    url: '/checkin/collect-sockets/' + id,
     method: 'get'
   })
 }
@@ -39,9 +39,9 @@ export function getCollectSocket(id) {
  * 通过ID删除对象
  * @param row
  */
-export function delCollectSocket(id) {
+export function delCollectSocket (id) {
   return fetch({
-    url: '/checkin/collectSocket/' + id,
+    url: '/checkin/collect-sockets/' + id,
     method: 'delete'
   })
 }
@@ -50,9 +50,9 @@ export function delCollectSocket(id) {
  * 更新对象
  * @param obj
  */
-export function updCollectSocket(obj) {
+export function updCollectSocket (obj) {
   return fetch({
-    url: '/checkin/collectSocket',
+    url: '/checkin/collect-sockets',
     method: 'put',
     data: obj
   })

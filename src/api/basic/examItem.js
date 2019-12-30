@@ -6,7 +6,7 @@ import fetch from '@/router/axios'
  */
 export function listByPage (query) {
   return fetch({
-    url: '/basic/examitems/page',
+    url: '/basic/exam-items/page',
     method: 'get',
     params: query
   })
@@ -18,7 +18,7 @@ export function listByPage (query) {
  */
 export function save (obj) {
   return fetch({
-    url: '/basic/examitems',
+    url: '/basic/exam-items',
     method: 'post',
     data: obj
   })
@@ -30,7 +30,7 @@ export function save (obj) {
  */
 export function getById (id) {
   return fetch({
-    url: '/basic/examitems/' + id,
+    url: '/basic/exam-items/' + id,
     method: 'get'
   })
 }
@@ -41,7 +41,7 @@ export function getById (id) {
  */
 export function removeById (id) {
   return fetch({
-    url: '/basic/examitems/' + id,
+    url: '/basic/exam-items/' + id,
     method: 'delete'
   })
 }
@@ -52,7 +52,7 @@ export function removeById (id) {
  */
 export function update (obj) {
   return fetch({
-    url: '/basic/examitems',
+    url: '/basic/exam-items',
     method: 'put',
     data: obj
   })
@@ -63,7 +63,7 @@ export function update (obj) {
  */
 export function getExamItemList () {
   return fetch({
-    url: '/basic/examitems',
+    url: '/basic/exam-items',
     method: 'get'
   })
 }

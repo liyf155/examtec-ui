@@ -4,9 +4,9 @@ import fetch from '@/router/axios'
  * 分页获取数据
  * @param query
  */
-export function getCheckinSocketsByPage(query) {
+export function getCheckinSocketsByPage (query) {
   return fetch({
-    url: '/checkin/checkinSocket/page',
+    url: '/checkin/checkin-sockets/page',
     method: 'get',
     params: query
   })
@@ -16,9 +16,9 @@ export function getCheckinSocketsByPage(query) {
  * 添加对象
  * @param obj
  */
-export function addCheckinSocket(obj) {
+export function addCheckinSocket (obj) {
   return fetch({
-    url: '/checkin/checkinSocket',
+    url: '/checkin/checkin-sockets',
     method: 'post',
     data: obj
   })
@@ -28,9 +28,9 @@ export function addCheckinSocket(obj) {
  * 通过ID获取对象
  * @param id
  */
-export function getCheckinSocket(id) {
+export function getCheckinSocket (id) {
   return fetch({
-    url: '/checkin/checkinSocket/' + id,
+    url: '/checkin/checkin-sockets/' + id,
     method: 'get'
   })
 }
@@ -39,9 +39,9 @@ export function getCheckinSocket(id) {
  * 通过ID删除对象
  * @param row
  */
-export function delCheckinSocket(id) {
+export function delCheckinSocket (id) {
   return fetch({
-    url: '/checkin/checkinSocket/' + id,
+    url: '/checkin/checkin-sockets/' + id,
     method: 'delete'
   })
 }
@@ -50,9 +50,9 @@ export function delCheckinSocket(id) {
  * 更新对象
  * @param obj
  */
-export function updCheckinSocket(obj) {
+export function updCheckinSocket (obj) {
   return fetch({
-    url: '/checkin/checkinSocket',
+    url: '/checkin/checkin-sockets',
     method: 'put',
     data: obj
   })
@@ -62,15 +62,15 @@ export function updCheckinSocket(obj) {
  * 导出数据
  * @param query
  */
-export function downloadCheckinSocket(query) {
+export function downloadCheckinSocket (query) {
   // return fetch({
-  //   url: '/checkin/checkinSocket/download',
+  //   url: '/checkin/checkin-sockets/download',
   //   method: 'get',
   //   params: query,
   //   responseType: 'arraybuffer'
   // })
   return fetch({
-    url: '/checkin/checkinSocket/download',
+    url: '/checkin/checkin-sockets/download',
     method: 'get',
     params: query,
     responseType: 'arraybuffer'
@@ -82,7 +82,7 @@ export function downloadCheckinSocket(query) {
     link.download = filename
     document.body.appendChild(link)
     link.click()
-    window.setTimeout(function() {
+    window.setTimeout(function () {
       URL.revokeObjectURL(blob)
       document.body.removeChild(link)
     }, 0)

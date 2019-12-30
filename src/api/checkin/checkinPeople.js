@@ -4,9 +4,9 @@ import fetch from '@/router/axios'
  * 分页获取数据
  * @param query
  */
-export function getCheckinPeoplesByPage(query) {
+export function getCheckinPeoplesByPage (query) {
   return fetch({
-    url: '/checkin/checkinPeople/page',
+    url: '/checkin/checkin-peoples/page',
     method: 'get',
     params: query
   })
@@ -16,9 +16,9 @@ export function getCheckinPeoplesByPage(query) {
  * 添加对象
  * @param obj
  */
-export function addCheckinPeople(obj) {
+export function addCheckinPeople (obj) {
   return fetch({
-    url: '/checkin/checkinPeople',
+    url: '/checkin/checkin-peoples',
     method: 'post',
     data: obj
   })
@@ -28,9 +28,9 @@ export function addCheckinPeople(obj) {
  * 通过ID获取对象
  * @param id
  */
-export function getCheckinPeople(id) {
+export function getCheckinPeople (id) {
   return fetch({
-    url: '/checkin/checkinPeople/' + id,
+    url: '/checkin/checkin-peoples/' + id,
     method: 'get'
   })
 }
@@ -39,9 +39,9 @@ export function getCheckinPeople(id) {
  * 通过ID删除对象
  * @param row
  */
-export function delCheckinPeople(id) {
+export function delCheckinPeople (id) {
   return fetch({
-    url: '/checkin/checkinPeople/' + id,
+    url: '/checkin/checkin-peoples/' + id,
     method: 'delete'
   })
 }
@@ -50,17 +50,17 @@ export function delCheckinPeople(id) {
  * 更新对象
  * @param obj
  */
-export function updCheckinPeople(obj) {
+export function updCheckinPeople (obj) {
   return fetch({
-    url: '/checkin/checkinPeople',
+    url: '/checkin/checkin-peoples',
     method: 'put',
     data: obj
   })
 }
 
-export function allcatedExamNodes(planId) {
+export function allcatedExamNodes (planId) {
   return fetch({
-    url: '/checkin/checkinPeople/allocated/examNodes/' + planId,
+    url: '/checkin/checkin-peoples/allocated/examNodes/' + planId,
     method: 'get'
   })
 }

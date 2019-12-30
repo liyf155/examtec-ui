@@ -1,9 +1,9 @@
 var path = require('path')
 // var baseUrl = 'https://gxpta.examtec.cn'
 var baseUrl = 'http://10.0.0.83:19080'
-// function resolve (dir) {
-//   return path.join(__dirname, '..', dir)
-// }
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
 module.exports = {
   publicPath: '/',
   outputDir: 'dist',
@@ -11,7 +11,22 @@ module.exports = {
   lintOnSave: true,
   // webpack配置
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-  chainWebpack: () => {},
+  chainWebpack: (config) => {
+    config.resolve.alias
+      .set('@', resolve('src'))
+    config.module.rules.delete('svg')
+    config.module
+      .rule('svg-smart')
+      .test(/\.svg$/)
+      .include
+      .add(resolve('src/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
+  },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       // 为生产环境修改配置...
@@ -20,17 +35,6 @@ module.exports = {
       // 为开发环境修改配置...
       config.mode = 'development'
     }
-
-    // Object.assign(config, {
-    //   // 开发生产共同配置
-    //   resolve: {
-    //     extensions: ['.js', '.vue', '.json'],
-    //     alias: {
-    //       'vue$': 'vue/dist/vue.esm.js',
-    //       '@': resolve('src')
-    //     }
-    //   }
-    // })
   },
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: true,

@@ -6,7 +6,7 @@ import fetch from '@/router/axios'
  */
 export function listByPage (query) {
   return fetch({
-    url: '/basic/examnodes/page',
+    url: '/basic/exam-nodes/page',
     method: 'get',
     params: query
   })
@@ -18,7 +18,7 @@ export function listByPage (query) {
  */
 export function save (obj) {
   return fetch({
-    url: '/basic/examnodes',
+    url: '/basic/exam-nodes',
     method: 'post',
     data: obj
   })
@@ -30,7 +30,7 @@ export function save (obj) {
  */
 export function getById (id) {
   return fetch({
-    url: '/basic/examnodes/' + id,
+    url: '/basic/exam-nodes/' + id,
     method: 'get'
   })
 }
@@ -52,7 +52,7 @@ export function removeById (id) {
  */
 export function update (obj) {
   return fetch({
-    url: '/basic/examnodes',
+    url: '/basic/exam-nodes',
     method: 'put',
     data: obj
   })
@@ -64,7 +64,7 @@ export function update (obj) {
  */
 export function getNodeNameList (cityId) {
   return fetch({
-    url: '/basic/examnodes/getNodeName/' + cityId,
+    url: '/basic/exam-nodes/getNodeName/' + cityId,
     method: 'get'
   })
 }

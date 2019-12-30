@@ -1,11 +1,10 @@
 import axios from 'axios'
 import store from '@/store'
-// import { getToken } from '@/util/auth'
 import { Message } from 'element-ui'
 import errorCode from '@/const/errorCode'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
-// import router from '@/router'
+import router from '@/router'
 import { serialize } from '@/util/util'
 
 // 超时时间
@@ -56,26 +55,27 @@ axios.interceptors.response.use(res => {
       type: 'warning'
     })
     store.dispatch('FedLogOut').then(() => {
-      this.$router.push({ path: '/login' })
-      // router.push({ path: '/login' })
+      // this.$router.push({ path: '/login' })
+      router.push({ path: '/login' })
     })
     return
   }
 
   if (status === 200) {
+    console.log(res.data)
     // 如果是undefined，则表示系统返回
     if (res.data.code !== undefined) {
       // res.data.code 不为空，则是自定义的异常处理
       if (res.data.code === 0) {
         return res.data
       } else if (res.data.code === 1000001000 || res.data.code === 1000001003) {
-        Message({
-          timeout: 5,
-          message: res.data.msg,
-          type: 'warning'
-        })
         store.dispatch('FedLogOut').then(() => {
-          // router.push({ path: '/login' })
+          Message({
+            timeout: 5,
+            message: res.data.msg,
+            type: 'warning'
+          })
+          router.push({ path: '/login' })
         })
         return
       } else {

@@ -12,7 +12,7 @@
           class="tag-item" :class="{'is-active':nowTagValue==item.value}" :name="item.value"
           @contextmenu.prevent="openMenu(item,$event)" @click="openUrl(item)"
         >
-          <span class="el-icon-star-off tag-item-icon" />
+          <span class="el-icon-star-on tag-item-icon" />
           <span class="tag-text">{{ item.label }}</span>
           <i v-if="item.close" class="el-icon-close tag-close" @click.stop="closeTag(item)" />
         </div>

@@ -71,7 +71,6 @@ const user = {
           commit('SET_PERMISSIONS', data.permissions || [])
           resolve(data)
         }).catch(error => {
-          console.log(error)
           reject(error)
         })
       })

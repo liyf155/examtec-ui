@@ -22,7 +22,7 @@ const navs = {
     tagList: getStore({ name: 'tagList' }) || [],
     tag: getStore({ name: 'tag' }) || tagObj,
     tagWel: {
-      label: '首页',
+      label: '主页',
       value: '/wel/index'
     },
     tagCurrent: getStore({ name: 'tagCurrent' }) || []

@@ -4,16 +4,23 @@ import store from './store'
 import { formatRoutes } from '@/util/util'
 // const _import = require('@/router/_import')
 
+// console.log(store)
+
 Vue.use(VueRouter)
+
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return routerPush.call(this, location).catch(error => error)
+}
 // 布局
 import Layout from '@/page/index/index'
 
 const constantRouterMap = [{
   path: '/',
+  // name: '主页',
   redirect: '/wel'
 }, {
   path: '/wel',
-  name: '主页',
   component: Layout,
   redirect: '/wel/index',
   children: [{
@@ -78,4 +85,3 @@ export default new VueRouter({
   },
   routes: [].concat(...formatRoutes(store.state.user.menu), constantRouterMap)
 })
-

@@ -95,7 +95,6 @@ export default {
         if (valid) {
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             // this.refreshCode()
-            // console.log(this.tagWel)
             if (this.tagWel) {
               this.$store.commit('ADD_TAG', this.tagWel)
               this.$router.push({ path: this.tagWel.value })

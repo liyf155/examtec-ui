@@ -37,12 +37,10 @@ router.beforeEach((to, from, next) => {
       if (store.getters.roles.length === 0) {
         store.dispatch('GetUserInfo').then(res => {
           // const roles = res.roles
-          // console.log(next)
           next({ ...to,
             replace: true
           })
         }).catch((e) => {
-          console.log(e)
           store.dispatch('FedLogOut').then(() => {
             next({
               path: '/login'
@@ -65,17 +63,17 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-// function findMenuParent(tag) {
-//   const tagCurrent = []
-//   tagCurrent.push(tag)
-//   return tagCurrent
-// }
+function findMenuParent (tag) {
+  const tagCurrent = []
+  tagCurrent.push(tag)
+  return tagCurrent
+}
 
 router.afterEach((to, from) => {
   NProgress.done()
   setTimeout(() => {
     const tag = store.getters.tag
     setTitle(tag.label)
-    // store.commit('SET_TAG_CURRENT', findMenuParent(tag))
+    store.commit('SET_TAG_CURRENT', findMenuParent(tag))
   }, 0)
 })

@@ -1,13 +1,22 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-undef */
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 import { validatenull } from './validate'
 import { baseUrl } from '@/config/env'
 import CryptoJS from 'crypto-js'
+Vue.use(VueRouter)
 
 export const initMenu = (router, menus) => {
   if (menus.length === 0) {
     return
   }
+  // router.$addRoutes = () => {
+  //   router.mather = new VueRouter({
+  //     mode: 'history'
+  //   }).mather
+  //   router.addRoutes(formatRoutes(menus))
+  // }
   router.addRoutes(formatRoutes(menus))
 }
 
