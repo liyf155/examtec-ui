@@ -25,12 +25,12 @@
       </el-table-column>
       <el-table-column align="center" label="设备类型">
         <template slot-scope="scope">
-          <span>{{ scope.row.deviceType }}</span>
+          <span>{{ scope.row.deviceType | deviceTypeFilter }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="考点名称">
         <template slot-scope="scope">
-          <el-select v-model="scope.row.nodeId" class="filter-item" filterable placeholder="请选择">
+          <el-select v-model="scope.row.nodeId" class="filter-item" filterable clearable placeholder="请选择">
             <el-option v-for="(item, idx) in allocatedExamNodes" :key="idx" :label="item.nodeName" :value="item.nodeId" />
           </el-select>
         </template>
@@ -72,6 +72,13 @@ export default {
         1: '锁定'
       }
       return statusMap[status]
+    },
+    deviceTypeFilter (status) {
+      const deviceTypeMap = {
+        0: '人证机',
+        1: '智能抓拍机'
+      }
+      return deviceTypeMap[status]
     }
   },
   props: {

@@ -61,9 +61,9 @@ export function updPosition (obj) {
 /**
  * 获取所有工作人员列表
  */
-export function getPostNameList () {
+export function listAll () {
   return fetch({
-    url: '/checkin/positions/getPostName',
+    url: '/checkin/positions',
     method: 'get'
   })
 }

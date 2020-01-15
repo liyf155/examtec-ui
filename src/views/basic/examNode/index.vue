@@ -81,40 +81,65 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-        <el-form-item label="所属省份名称" prop="provinceId">
-          <el-select v-model="form.provinceId" placeholder="==请选择==" @change="selectCityNameList(form)">
-            <el-option v-for="p in provinceNameList" :key="p.areaCode" :label="p.name" :value="p.areaCode" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属城市名称" prop="cityId">
-          <el-select v-model="form.cityId" placeholder="==请选择==">
-            <el-option v-for="c in cityNameList" :key="c.areaCode" :label="c.name" :value="c.areaCode" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="考点名称" prop="nodeName">
-          <el-input v-model="form.nodeName" placeholder="请输入考点名称" />
-        </el-form-item>
-        <el-form-item label="考点地址" prop="address">
-          <el-input v-model="form.address" placeholder="请输入考点地址" />
-        </el-form-item>
-        <el-form-item label="联系人" prop="linkerName">
-          <el-input v-model="form.linkerName" placeholder="请输入联系人" />
-        </el-form-item>
-        <el-form-item label="联系电话" prop="linkerPhone">
-          <el-input v-model="form.linkerPhone" placeholder="请输入联系电话" />
-        </el-form-item>
-        <el-form-item label="考场数量" prop="roomCount">
-          <el-input v-model="form.roomCount" placeholder="请输入考场数量" />
-        </el-form-item>
-        <el-form-item label="座位数" prop="seatCount">
-          <el-input v-model="form.seatCount" placeholder="请输入座位数" />
-        </el-form-item>
-        <el-form-item label="地理经度" prop="lng">
-          <el-input v-model="form.lng" placeholder="请输入地理经度" />
-        </el-form-item>
-        <el-form-item label="地理纬度" prop="lat">
-          <el-input v-model="form.lat" placeholder="请输入地理纬度" />
-        </el-form-item>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="所属省份名称" prop="provinceId">
+              <el-select v-model="form.provinceId" placeholder="===请选择===" style="width: 210px" filterable clearable @change="initCities(form.provinceId)">
+                <el-option v-for="p in provinceNameList" :key="p.areaCode" :label="p.name" :value="p.areaCode" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="所属城市名称" prop="cityId">
+              <el-select v-model="form.cityId" placeholder="===请选择===" style="width: 210px" filterable clearable>
+                <el-option v-for="c in cityNameList" :key="c.areaCode" :label="c.name" :value="c.areaCode" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20">
+            <el-form-item label="考点名称" prop="nodeName">
+              <el-input v-model="form.nodeName" placeholder="请输入考点名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="20">
+            <el-form-item label="考点地址" prop="address">
+              <el-input v-model="form.address" placeholder="请输入考点地址" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="负责人" prop="linkerName">
+              <el-input v-model="form.linkerName" placeholder="请输入联系人" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="联系电话" prop="linkerPhone">
+              <el-input v-model="form.linkerPhone" placeholder="请输入联系电话" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="地理经度" prop="lng">
+              <el-input v-model="form.lng" placeholder="请输入地理经度" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="地理纬度" prop="lat">
+              <el-input v-model="form.lat" placeholder="请输入地理纬度" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20">
+            <el-form-item label="交通信息" prop="traffic">
+              <el-input v-model="form.traffic" type="textarea" :rows="2" placeholder="请输入交通信息" />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel('form')">
@@ -151,16 +176,16 @@ export default {
     }
   },
   data () {
-    var checkLinkerPhone = (rule, value, callback) => {
-      var p = /^((0\d{2,3}-\d{6,8})|(1[3584]\d{9}))$/
-      if (!value) {
-        callback(new Error('请输入联系电话'))
-      } else if (!p.test(value)) {
-        callback(new Error('联系电话输入有误！'))
-      } else {
-        callback()
-      }
-    }
+    // var checkLinkerPhone = (rule, value, callback) => {
+    //   var p = /^((0\d{2,3}-\d{6,8})|(1[3584]\d{9}))$/
+    //   if (!value) {
+    //     callback(new Error('请输入联系电话'))
+    //   } else if (!p.test(value)) {
+    //     callback(new Error('联系电话输入有误！'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       form: {
         provinceId: undefined,
@@ -175,29 +200,24 @@ export default {
         seatCount: undefined,
         lng: undefined,
         lat: undefined,
-        traffic: undefined,
-        createBy: undefined,
-        createTime: undefined,
-        updateBy: undefined,
-        updateTime: undefined,
-        delFlag: undefined
+        traffic: undefined
       },
       rules: {
         nodeName: [
           { required: true, message: '请输入考点名称', trigger: 'blur' }
         ],
-        linkerName: [
-          { required: true, message: '请输入联系人', trigger: 'blur' }
+        provinceId: [
+          { required: true, message: '请选择考点所属省份', trigger: 'blur' }
         ],
-        linkerPhone: [
-          { required: true, validator: checkLinkerPhone, trigger: 'blur' }
-        ],
-        roomCount: [
-          { required: true, message: '请输入考场数量', trigger: 'blur' }
-        ],
-        seatCount: [
-          { required: true, message: '请输入座位数', trigger: 'blur' }
+        // linkerPhone: [
+        //   { required: true, validator: checkLinkerPhone, trigger: 'blur' }
+        // ],
+        cityId: [
+          { required: true, message: '请选择考点所属城市', trigger: 'blur' }
         ]
+        // seatCount: [
+        //   { required: true, message: '请输入座位数', trigger: 'blur' }
+        // ]
       },
       list: null,
       total: null,
@@ -228,7 +248,7 @@ export default {
   },
   created () {
     this.getList()
-    this.getAdministrativeList()
+    // this.getAdministrativeList()
     this.mt_examNode_add = this.permissions['mt_examNode_add']
     this.mt_examNode_edit = this.permissions['mt_examNode_edit']
     this.mt_examNode_del = this.permissions['mt_examNode_del']
@@ -256,19 +276,14 @@ export default {
     },
     handleCreate () {
       this.resetTemp()
+      this.initProvinces()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
     },
     handleUpdate (row) {
       getById(row.id).then(response => {
-        getAdministrativeSelect(parseInt(row.provinceId)).then(response => {
-          this.cityNameList = response.data
-          var a
-          for (var i = 0; i < this.cityNameList.length; i++) {
-            a = this.cityNameList[i].areaCode
-            this.cityNameList[i].areaCode = a.toString()
-          }
-        })
+        this.initProvinces()
+        this.initCities(row.provinceId)
         this.form = response.data
         this.dialogFormVisible = true
         this.dialogStatus = 'update'
@@ -294,6 +309,8 @@ export default {
     },
     createExamNode (formName) {
       const set = this.$refs
+      this.form.provinceName = this.getProvinceName()
+      this.form.cityName = this.getCityName()
       set[formName].validate(valid => {
         if (valid) {
           save(this.form).then(() => {
@@ -318,6 +335,8 @@ export default {
     },
     updateExamNode (formName) {
       const set = this.$refs
+      this.form.provinceName = this.getProvinceName()
+      this.form.cityName = this.getCityName()
       set[formName].validate(valid => {
         if (valid) {
           this.dialogFormVisible = false
@@ -350,34 +369,37 @@ export default {
         seatCount: undefined,
         lng: undefined,
         lat: undefined,
-        traffic: undefined,
-        createBy: undefined,
-        createTime: undefined,
-        updateBy: undefined,
-        updateTime: undefined,
-        delFlag: undefined
+        traffic: undefined
       }
     },
-    getAdministrativeList () {
+    initProvinces () {
       getAdministrativeSelect(0).then(response => {
         this.provinceNameList = response.data
-        var a
-        for (var i = 0; i < this.provinceNameList.length; i++) {
-          a = this.provinceNameList[i].areaCode
-          this.provinceNameList[i].areaCode = a.toString()
-        }
       })
     },
-    selectCityNameList (form) {
-      form.cityId = ''
-      getAdministrativeSelect(form.provinceId).then(response => {
+    initCities (provinceId) {
+      this.form.cityId = ''
+      getAdministrativeSelect(provinceId).then(response => {
         this.cityNameList = response.data
-        var a
-        for (var i = 0; i < this.cityNameList.length; i++) {
-          a = this.cityNameList[i].areaCode
-          this.cityNameList[i].areaCode = a.toString()
+      })
+    },
+    getProvinceName () {
+      let provinceName = ''
+      this.provinceNameList.find((item) => {
+        if (item.areaCode === this.form.provinceId) {
+          provinceName = item.name
         }
       })
+      return provinceName
+    },
+    getCityName () {
+      let cityName = ''
+      this.cityNameList.find((item) => {
+        if (item.areaCode === this.form.cityId) {
+          cityName = item.name
+        }
+      })
+      return cityName
     }
   }
 }

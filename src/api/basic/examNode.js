@@ -64,7 +64,7 @@ export function update (obj) {
  */
 export function getNodeNameList (cityId) {
   return fetch({
-    url: '/basic/exam-nodes/getNodeName/' + cityId,
+    url: '/basic/exam-nodes/city/' + cityId,
     method: 'get'
   })
 }

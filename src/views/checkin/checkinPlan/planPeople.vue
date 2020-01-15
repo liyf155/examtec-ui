@@ -8,24 +8,29 @@
         <el-form-item label="身份证号：">
           <el-input v-model="listQuery.certId" style="width: 200px;" class="filter-item" placeholder="模糊查询" @keyup.enter.native="handleFilter" />
         </el-form-item>
-        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-          搜索
-        </el-button>
-        <el-button v-if="ck_checkinPeople_add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
-          添加
-        </el-button>
-        <el-button class="filter-item" type="info" icon="el-icon-back" @click="backToPlanPage">
-          返回
-        </el-button>
-        <el-upload
-          v-if="ck_checkinPeople_add" class="upload-demo" action="/checkin/checkinPeople/importFromExcel"
-          :headers="headers" :data="uploadData" :on-error="uploadError"
-          :on-success="uploadSuccess" :before-upload="beforeUpload"
-        >
-          <el-button class="filter-item" type="primary" icon="el-icon-upload">
-            批量导入
+        <el-form-item>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+            搜索
           </el-button>
-        </el-upload>
+          <el-button v-if="ck_checkinPeople_add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
+            添加
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-upload
+            v-if="ck_checkinPeople_add" ref="upload" class="upload-demo"
+            action="/checkin/checkin-peoples/import" :headers="headers" :data="uploadData"
+            :on-error="uploadError" :show-file-list="false" :on-success="uploadSuccess"
+            :before-upload="beforeUpload" :limit="1"
+          >
+            <el-button class="filter-item" type="primary" icon="el-icon-upload">
+              批量导入
+            </el-button>
+            <el-button class="filter-item" type="info" icon="el-icon-back" @click="backToPlanPage">
+              返回
+            </el-button>
+          </el-upload>
+        </el-form-item>
       </el-form>
     </div>
     <el-table
@@ -103,51 +108,78 @@
     </div>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="省份名称" prop="provinceId">
-          <el-select v-model="form.provinceId" placeholder="==请选择==" @change="selectCityNameList(form)">
-            <el-option v-for="p in provinceNameList" :key="p.areaCode" :label="p.name" :value="p.areaCode" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="城市名称" prop="cityId">
-          <el-select v-model="form.cityId" placeholder="==请选择==" @change="getExamNodeName()">
-            <el-option v-for="c in cityNameList" :key="c.areaCode" :label="c.name" :value="c.areaCode" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="考点名称" prop="nodeId">
-          <el-select v-model="form.nodeId" placeholder="==请选择==">
-            <el-option v-for="n in nodeNameList" :key="n.id" :label="n.nodeName" :value="n.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="form.name" placeholder="请输入姓名" />
-        </el-form-item>
-        <el-form-item label="身份证号" prop="certId">
-          <el-input v-model="form.certId" placeholder="请输入身份证号" />
-        </el-form-item>
-        <el-form-item label="性别" prop="sex">
-          <el-select v-model="form.sex" placeholder="==请选择==">
-            <el-option v-for="s in sexList" :key="s.value" :label="s.label" :value="s.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="岗位名称" prop="postId">
-          <el-select v-model="form.postId" placeholder="==请选择==">
-            <el-option v-for="p in postNameList" :key="p.id" :label="p.postName" :value="p.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="科目名称" prop="subjectId">
-          <el-select v-model="form.subjectId" placeholder="==请选择==">
-            <el-option v-for="s in subjectNameList" :key="s.id" :label="s.subjectName" :value="s.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="联系方式" prop="linkerPhone">
-          <el-input v-model="form.linkerPhone" placeholder="请输入联系方式" />
-        </el-form-item>
-        <el-form-item label="报名号" prop="serialNo">
-          <el-input v-model="form.serialNo" placeholder="请输入报名号" />
-        </el-form-item>
-        <el-form-item label="相片信息" prop="photoInfo">
-          <el-input v-model="form.photoInfo" placeholder="请输入相片信息" />
-        </el-form-item>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="省份名称" prop="provinceId">
+              <el-select v-model="form.provinceId" placeholder="===请选择===" filterable clearable style="width: 220px" @change="initCities(form.provinceId)">
+                <el-option v-for="p in provinceList" :key="p.areaCode" :label="p.name" :value="p.areaCode" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="城市名称" prop="cityId">
+              <el-select v-model="form.cityId" placeholder="===请选择===" filterable clearable style="width: 220px" @change="initExamNodes(form.cityId)">
+                <el-option v-for="c in cityList" :key="c.areaCode" :label="c.name" :value="c.areaCode" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="考点名称" prop="nodeId">
+              <el-select v-model="form.nodeId" placeholder="===请选择===" filterable clearable style="width: 220px">
+                <el-option v-for="n in nodeList" :key="n.id" :label="n.nodeName" :value="n.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="姓名" prop="name">
+              <el-input v-model="form.name" placeholder="请输入姓名" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="身份证号" prop="certId">
+              <el-input v-model="form.certId" placeholder="请输入身份证号" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="性别" prop="sex">
+              <el-select v-model="form.sex" placeholder="===请选择===" style="width: 220px">
+                <el-option v-for="s in sexList" :key="s.value" :label="s.label" :value="s.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="岗位名称" prop="postId">
+              <el-select v-model="form.postId" placeholder="===请选择===" style="width: 220px">
+                <el-option v-for="p in postList" :key="p.id" :label="p.postName" :value="p.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="科目名称" prop="subjectId">
+              <el-select v-model="form.subjectId" placeholder="===请选择===" style="width: 220px">
+                <el-option v-for="s in subjectList" :key="s.id" :label="s.subjectName" :value="s.id" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="联系方式" prop="linkerPhone">
+              <el-input v-model="form.linkerPhone" placeholder="请输入联系方式" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="报名号" prop="serialNo">
+              <el-input v-model="form.serialNo" placeholder="请输入报名号" />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel('form')">
@@ -172,10 +204,10 @@ import {
   delCheckinPeople,
   updCheckinPeople
 } from '@/api/checkin/checkinPeople'
-import { getPostNameList } from '@/api/checkin/position'
+import { listAll } from '@/api/checkin/position'
 import { getAdministrativeSelect } from '@/api/basic/administrative.js'
 import { getNodeNameList } from '@/api/basic/examNode'
-import { getExamSubjectNameList } from '@/api/basic/examSubject'
+import { listByItemId } from '@/api/basic/examSubject'
 import { mapGetters } from 'vuex'
 import store from '@/store'
 import waves from '@/directive/waves/index.js' // 水波纹
@@ -246,12 +278,10 @@ export default {
         serialNo: undefined
       },
       rules: {
-        provinceId: [
-          { required: true, message: '请选择省份', trigger: 'change' }
-        ],
+        provinceId: [{ required: true, message: '请选择省份', trigger: 'change' }],
         cityId: [{ required: true, message: '请选择城市', trigger: 'change' }],
         nodeId: [{ required: true, message: '请选择考点', trigger: 'change' }],
-        postId: [{ required: true, message: '请选择岗位', trigger: 'change' }],
+        // postId: [{ required: true, message: '请选择岗位', trigger: 'change' }],
         name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
         certId: [{ required: true, validator: checkCertId, trigger: 'blur' }]
       },
@@ -276,9 +306,9 @@ export default {
       uploadData: {
         planId: this.planId
       },
-      postNameList: [],
-      provinceNameList: [],
-      cityNameList: [],
+      postList: [],
+      provinceList: [],
+      cityList: [],
       sexList: [
         {
           label: '男',
@@ -289,8 +319,8 @@ export default {
           value: '女'
         }
       ],
-      nodeNameList: [],
-      subjectNameList: []
+      nodeList: [],
+      subjectList: []
     }
   },
   computed: {
@@ -331,27 +361,21 @@ export default {
     },
     handleCreate () {
       this.resetTemp()
-      this.getPostName()
-      this.getAdministrativeList()
-      this.getExamSubject()
+      this.initProvinces()
+      this.initPostition()
+      this.initExamSubject()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
     },
     handleUpdate (row) {
-      this.getPostName()
-      this.getAdministrativeList()
-      this.getExamSubject()
       getCheckinPeople(row.id).then(response => {
-        getAdministrativeSelect(row.provinceId).then(response => {
-          this.cityNameList = response.data
-          var a
-          for (var i = 0; i < this.cityNameList.length; i++) {
-            a = this.cityNameList[i].areaCode
-            this.cityNameList[i].areaCode = a.toString()
-          }
-        })
+        this.initProvinces()
+        this.initCities(row.provinceId)
+        this.initExamNodes(row.cityId)
+        this.initExamSubject()
+        this.initProvinces()
+        this.initPostition()
         this.form = response.data
-        this.getExamNodeName()
         this.dialogFormVisible = true
         this.dialogStatus = 'update'
       })
@@ -376,6 +400,7 @@ export default {
     },
     createCheckinPeople (formName) {
       const set = this.$refs
+      this.initForm()
       set[formName].validate(valid => {
         if (valid) {
           this.form.planId = this.planId
@@ -401,6 +426,7 @@ export default {
     },
     updateCheckinPeople (formName) {
       const set = this.$refs
+      this.initForm()
       set[formName].validate(valid => {
         if (valid) {
           this.dialogFormVisible = false
@@ -418,6 +444,17 @@ export default {
           return false
         }
       })
+    },
+    initForm () {
+      this.form.provinceName = this.getProvinceName()
+      this.form.cityName = this.getCityName()
+      this.form.nodeName = this.getNodeName()
+      if (this.form.subjectId) {
+        this.form.subjectName = this.getSubjectName()
+      }
+      if (this.form.postId) {
+        this.form.postName = this.getPositionName()
+      }
     },
     resetTemp () {
       this.form = {
@@ -445,32 +482,35 @@ export default {
       this.$emit('closePlanPeopleDialog')
     },
     // 上传成功后的回调
-    uploadSuccess (response) {
-      if (response.code === 1) {
+    uploadSuccess (response, file, fileList) {
+      if (response.code !== 0) {
         this.$notify({
           title: '提示',
           message: response.msg,
           type: 'warning',
-          duration: 5000
+          duration: 3000
         })
       } else {
-        this.getList()
         this.$notify({
-          title: '成功',
+          title: '批量导入成功',
           message: response.msg,
           type: 'success',
           duration: 3000
         })
       }
+      this.$refs.upload.clearFiles()
+      this.getList()
     },
     // 上传错误
-    uploadError (response) {
+    uploadError (response, file, fileList) {
       this.$notify({
         title: '失败',
-        message: '上传文件失败，请检查文件内容格式是否正确',
+        message: '上传文件失败，请稍后再试',
         type: 'error',
         duration: 3000
       })
+      this.$refs.upload.clearFiles()
+      this.getList()
     },
     // 上传前对文件的大小的判断
     beforeUpload (file) {
@@ -494,43 +534,76 @@ export default {
       }
       return extension && isLt2M
     },
-    getPostName () {
-      getPostNameList().then(response => {
-        this.postNameList = response.data
+    initPostition () {
+      listAll().then(response => {
+        this.postList = response.data
       })
     },
-    getAdministrativeList () {
+    initExamNodes (cityId) {
+      getNodeNameList(cityId).then(response => {
+        this.nodeList = response.data
+      })
+    },
+    initExamSubject () {
+      listByItemId(this.itemId).then(response => {
+        this.subjectList = response.data
+      })
+    },
+    initProvinces () {
       getAdministrativeSelect(0).then(response => {
-        this.provinceNameList = response.data
-        var a
-        for (var i = 0; i < this.provinceNameList.length; i++) {
-          a = this.provinceNameList[i].areaCode
-          this.provinceNameList[i].areaCode = a.toString()
+        this.provinceList = response.data
+      })
+    },
+    initCities (provinceId) {
+      this.form.cityId = ''
+      getAdministrativeSelect(provinceId).then(response => {
+        this.cityList = response.data
+      })
+    },
+    getProvinceName () {
+      let provinceName = ''
+      this.provinceList.find((item) => {
+        if (item.areaCode === this.form.provinceId) {
+          provinceName = item.name
         }
       })
+      return provinceName
     },
-    selectCityNameList (form) {
-      form.cityId = ''
-      form.nodeId = ''
-      this.nodeNameList = {}
-      getAdministrativeSelect(form.provinceId).then(response => {
-        this.cityNameList = response.data
-        var a
-        for (var i = 0; i < this.cityNameList.length; i++) {
-          a = this.cityNameList[i].areaCode
-          this.cityNameList[i].areaCode = a.toString()
+    getCityName () {
+      let cityName = ''
+      this.cityList.find((item) => {
+        if (item.areaCode === this.form.cityId) {
+          cityName = item.name
         }
       })
+      return cityName
     },
-    getExamNodeName () {
-      getNodeNameList(this.form.cityId).then(response => {
-        this.nodeNameList = response.data
+    getNodeName () {
+      let nodeName = ''
+      this.nodeList.find((item) => {
+        if (item.id === this.form.nodeId) {
+          nodeName = item.nodeName
+        }
       })
+      return nodeName
     },
-    getExamSubject () {
-      getExamSubjectNameList(this.itemId).then(response => {
-        this.subjectNameList = response.data
+    getPositionName () {
+      let positionName = ''
+      this.postList.find((item) => {
+        if (item.id === this.form.postId) {
+          positionName = item.postName
+        }
       })
+      return positionName
+    },
+    getSubjectName () {
+      let subjectName = ''
+      this.subjectList.find((item) => {
+        if (item.id === this.form.subjectId) {
+          subjectName = item.subjectName
+        }
+      })
+      return subjectName
     }
   }
 }

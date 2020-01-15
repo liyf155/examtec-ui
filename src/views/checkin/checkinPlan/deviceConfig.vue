@@ -76,6 +76,7 @@ export default {
       }
     },
     getAllocatedExamNodes (planId) {
+      console.log(planId)
       allcatedExamNodes(planId).then(res => {
         this.allocatedExamNodes = res.data
         this.$refs.UseableDevice.allocatedExamNodes = this.allocatedExamNodes

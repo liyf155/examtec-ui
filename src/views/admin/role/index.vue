@@ -289,7 +289,7 @@ export default {
         if (item.children && item.children.length !== 0) {
           this.resolveAllEunuchNodeId(item.children, idArr, temp)
         } else {
-          temp.push(idArr.filter(id => id === item.id))
+          temp.push(idArr.filter(id => id === parseInt(item.id)))
         }
       }
       return temp

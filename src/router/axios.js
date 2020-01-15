@@ -1,5 +1,5 @@
-import axios from 'axios'
 import store from '@/store'
+import axios from 'axios'
 import { Message } from 'element-ui'
 import errorCode from '@/const/errorCode'
 import NProgress from 'nprogress' // progress bar
@@ -55,14 +55,12 @@ axios.interceptors.response.use(res => {
       type: 'warning'
     })
     store.dispatch('FedLogOut').then(() => {
-      // this.$router.push({ path: '/login' })
       router.push({ path: '/login' })
     })
     return
   }
 
   if (status === 200) {
-    console.log(res.data)
     // 如果是undefined，则表示系统返回
     if (res.data.code !== undefined) {
       // res.data.code 不为空，则是自定义的异常处理

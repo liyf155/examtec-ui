@@ -2,44 +2,29 @@
   <div v-if="!planPeopleDialogVisible" class="app-container calendar-list-container">
     <div class="filter-container">
       <el-form>
-        <el-input
-          v-model="listQuery.planName"
-          style="width: 200px;"
-          class="filter-item"
-          placeholder="模糊查询"
-          @keyup.enter.native="handleFilter"
-        />
-        <el-button
-          v-waves class="filter-item" type="primary"
-          icon="el-icon-search" @click="handleFilter"
-        >
+        <el-input v-model="listQuery.planName" style="width: 200px;" class="filter-item" placeholder="模糊查询" @keyup.enter.native="handleFilter" />
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
           搜索
         </el-button>
-        <el-button
-          v-if="ck_checkinPlan_add"
-          class="filter-item"
-          style="margin-left: 10px;"
-          type="primary"
-          icon="el-icon-plus"
-          @click="handleCreate"
-        >
+        <el-button v-if="ck_checkinPlan_add" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
           添加
         </el-button>
       </el-form>
     </div>
     <el-table
-      :key="tableKey"
-      v-loading.body="listLoading"
-      :data="list"
-      element-loading-text="正在加载..."
-      border
-      fit
-      highlight-current-row
-      style="width: 99%"
+      :key="tableKey" v-loading.body="listLoading" :data="list"
+      element-loading-text="正在加载..." border fit
+      highlight-current-row style="width: 99%"
     >
       <el-table-column align="center" label="计划名称">
         <template slot-scope="scope">
           <span>{{ scope.row.planName }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="考试名称">
+        <template slot-scope="scope">
+          <span>{{ scope.row.itemName }}</span>
         </template>
       </el-table-column>
 
@@ -56,18 +41,14 @@
       </el-table-column>
       <el-table-column align="center" label="人员分配">
         <template slot-scope="scope">
-          <el-button
-            type="text" icon="el-icon-edit" @click="handlePlanPeople(scope.row)"
-          >
+          <el-button type="text" icon="el-icon-edit" @click="handlePlanPeople(scope.row)">
             <span>{{ scope.row.peopleCount }}</span>
           </el-button>
         </template>
       </el-table-column>
       <el-table-column align="center" label="设备分配">
         <template slot-scope="scope">
-          <el-button
-            type="text" icon="el-icon-share" @click="openDeviceConfig(scope.row)"
-          >
+          <el-button type="text" icon="el-icon-share" @click="openDeviceConfig(scope.row)">
             <span />
           </el-button>
         </template>
@@ -88,12 +69,7 @@
           <el-button v-if="ck_checkinPlan_edit" size="small" type="success" @click="handleUpdate(scope.row)">
             编辑
           </el-button>
-          <el-button
-            v-if="ck_checkinPlan_del"
-            size="small"
-            type="danger"
-            @click="deleteCheckinPlan(scope.row)"
-          >
+          <el-button v-if="ck_checkinPlan_del" size="small" type="danger" @click="deleteCheckinPlan(scope.row)">
             删除
           </el-button>
         </template>
@@ -101,12 +77,8 @@
     </el-table>
     <div v-show="!listLoading" class="pagination-container">
       <el-pagination
-        :current-page.sync="listQuery.current"
-        :page-sizes="[10, 20, 30, 50]"
-        :page-size="listQuery.size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        @size-change="handleSizeChange"
+        :current-page.sync="listQuery.current" :page-sizes="[10, 20, 30, 50]" :page-size="listQuery.size"
+        layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
     </div>
@@ -116,19 +88,8 @@
           <el-input v-model="form.planName" placeholder="请输入计划名称" />
         </el-form-item>
         <el-form-item label="考试项目" prop="itemId">
-          <el-select
-            v-model="form.itemId"
-            class="filter-item"
-            filterable
-            placeholder="请选择考试项目"
-            style="width:350px"
-          >
-            <el-option
-              v-for="item in examItems"
-              :key="item.id"
-              :label="item.itemName"
-              :value="item.id"
-            />
+          <el-select v-model="form.itemId" class="filter-item" filterable placeholder="请选择考试项目" style="width:350px">
+            <el-option v-for="item in examItems" :key="item.id" :label="item.itemName" :value="item.id" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -136,9 +97,7 @@
         <el-button @click="cancel('form')">
           取 消
         </el-button>
-        <el-button
-          v-if="dialogStatus == 'create'" type="primary" @click="createCheckinPlan('form')"
-        >
+        <el-button v-if="dialogStatus == 'create'" type="primary" @click="createCheckinPlan('form')">
           确 定
         </el-button>
         <el-button v-else type="primary" @click="updateCheckinPlan('form')">
@@ -147,32 +106,17 @@
       </div>
     </el-dialog>
     <!-- 场次编排会话 -->
-    <el-dialog
-      :title="roundConfigTitle"
-      width="50%"
-      :before-close="closeRoundConfig"
-      :visible.sync="roundConfigVisible"
-    >
+    <el-dialog :title="roundConfigTitle" width="50%" :before-close="closeRoundConfig" :visible.sync="roundConfigVisible">
       <RoundConfig ref="RoundConfig" :plan-id="currentPlanId" @page="getList" />
     </el-dialog>
     <!-- 设备配置会话 -->
-    <el-dialog
-      :title="deviceConfigTitle"
-      width="60%"
-      :before-close="closeDeviceConfigDialog"
-      :visible.sync="deviceConfigVisible"
-    >
+    <el-dialog :title="deviceConfigTitle" width="60%" :before-close="closeDeviceConfigDialog" :visible.sync="deviceConfigVisible">
       <DeviceConfig ref="DeviceConfig" :plan-id="currentPlanId" @page="getList" />
     </el-dialog>
   </div>
   <div v-else>
     <!-- 考生编辑会话 -->
-    <PlanPeople
-      ref="planPeopleClient"
-      :plan-id="currentPlanId"
-      :item-id="currentItemId"
-      @closePlanPeopleDialog="closePlanPeopleDialog"
-    />
+    <PlanPeople ref="planPeopleClient" :plan-id="currentPlanId" :item-id="currentItemId" @closePlanPeopleDialog="closePlanPeopleDialog" />
   </div>
 </template>
 
@@ -210,7 +154,8 @@ export default {
     return {
       form: {
         planName: undefined,
-        itemId: ''
+        itemId: '',
+        itemName: ''
       },
       rules: {
         planName: [
@@ -330,6 +275,7 @@ export default {
     },
     createCheckinPlan (formName) {
       const set = this.$refs
+      this.form.itemName = this.getItemLabel()
       set[formName].validate(valid => {
         if (valid) {
           addCheckinPlan(this.form).then(() => {
@@ -347,6 +293,15 @@ export default {
         }
       })
     },
+    getItemLabel () {
+      let itemName = ''
+      this.examItems.find((item) => {
+        if (item.id === this.form.itemId) {
+          itemName = item.itemName
+        }
+      })
+      return itemName
+    },
     cancel (formName) {
       this.dialogFormVisible = false
       const set = this.$refs
@@ -354,6 +309,7 @@ export default {
     },
     updateCheckinPlan (formName) {
       const set = this.$refs
+      this.form.itemName = this.getItemLabel()
       set[formName].validate(valid => {
         if (valid) {
           this.dialogFormVisible = false

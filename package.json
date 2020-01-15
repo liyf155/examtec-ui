@@ -22,6 +22,7 @@
     "sass": "^1.24.0",
     "sass-loader": "^8.0.0",
     "svg-sprite-loader": "^4.1.6",
+    "v-viewer": "^1.5.1",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
     "vue-image-crop-upload": "^2.5.0",

@@ -1,6 +1,6 @@
 var path = require('path')
 // var baseUrl = 'https://gxpta.examtec.cn'
-var baseUrl = 'http://10.0.0.83:19080'
+var baseUrl = 'http://0.0.0.0:19080'
 function resolve (dir) {
   return path.join(__dirname, dir)
 }

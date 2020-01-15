@@ -60,7 +60,7 @@ export function updCheckinPeople (obj) {
 
 export function allcatedExamNodes (planId) {
   return fetch({
-    url: '/checkin/checkin-peoples/allocated/examNodes/' + planId,
+    url: '/checkin/checkin-peoples/allocated-nodes/' + planId,
     method: 'get'
   })
 }

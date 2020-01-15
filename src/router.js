@@ -2,9 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './store'
 import { formatRoutes } from '@/util/util'
-// const _import = require('@/router/_import')
-
-// console.log(store)
 
 Vue.use(VueRouter)
 

@@ -58,6 +58,14 @@ export function updCheckinSocket (obj) {
   })
 }
 
+export function listCheckinSocketStat (query) {
+  return fetch({
+    url: '/checkin/checkin-sockets/statistics',
+    method: 'get',
+    params: query
+  })
+}
+
 /**
  * 导出数据
  * @param query

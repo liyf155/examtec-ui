@@ -385,7 +385,6 @@ export default {
       return extension || (extension2 && isLt2M)
     },
     uploadProgress (event, file, fileList) {
-      console.log('会不会执行这里的方法')
       this.this.uploadPercentage = file.percentage
     },
     closeProgressDialog () {

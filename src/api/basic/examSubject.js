@@ -62,9 +62,9 @@ export function update (obj) {
  * 获取考试科目名称列表
  * @param
  */
-export function getExamSubjectNameList (itemId) {
+export function listByItemId (itemId) {
   return fetch({
-    url: '/basic/exam-subjects/getSubjectName/' + itemId,
+    url: '/basic/exam-subjects/exam-item/' + itemId,
     method: 'get'
   })
 }
